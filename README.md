@@ -37,7 +37,6 @@ class KalmanFilter:
         self.x = self.x + np.dot(K, y)
         self.P = np.dot(np.eye(self.F.shape[0]) - np.dot(K, self.H), self.P)
 
-# Initialization
 dt = 0.1
 F = np.array([[1, dt], [0, 1]])
 H = np.array([[1, 0]])
@@ -47,21 +46,18 @@ x0 = np.array([0, 0])
 P0 = np.diag([1, 1])
 kf = KalmanFilter(F, H, Q, R, x0, P0)
 
-# Simulation
 truestates = []
 measurements = []
 for i in range(100):
     truestates.append([i * dt, 1])
     measurements.append(i * dt + np.random.normal(scale=1))
 
-# Estimation
 est_states = []
 for z in measurements:
     kf.predict()
     kf.update(np.array([z]))
     est_states.append(kf.x)
 
-# Plotting
 plt.plot([s[0] for s in truestates], label="True")
 plt.plot([s[0] for s in est_states], label="Estimate")
 plt.legend()
